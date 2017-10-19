@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ejb-jar" name="completeEar-ejb:ejb">
+    <output-path>$PROJECT_DIR$/completeEar-ejb/target</output-path>
+    <root id="archive" name="completeEar-ejb-1.0-SNAPSHOT.jar">
+      <element id="artifact" artifact-name="completeEar-ejb:ejb exploded" />
+    </root>
+  </artifact>
+</component>

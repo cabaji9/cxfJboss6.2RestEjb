@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="ear" name="completeEar-ear:ear">
+    <output-path>$PROJECT_DIR$/completeEar-ear/target</output-path>
+    <root id="archive" name="completeEar.ear">
+      <element id="artifact" artifact-name="completeEar-ear:ear exploded" />
+    </root>
+  </artifact>
+</component>

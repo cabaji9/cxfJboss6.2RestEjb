@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+      <artifactId>completeEar</artifactId>
+      <groupId>personal</groupId>
+      <version>1.0-SNAPSHOT</version>
+   </parent>
+
+   <artifactId>completeEar-ejb</artifactId>
+   <packaging>ejb</packaging>
+
+   <name>completeEar EJB module</name>
+
+   <dependencies>
+
+      <!-- Declare the APIs we depend on and need for compilation. All of 
+         them are provided by JBoss AS 7 -->
+
+      <!-- Import the EJB API, we use provided scope as the API is included 
+         in JBoss AS 7 -->
+
+
+      <!-- Import the CDI API, we use provided scope as the API is included
+         in JBoss AS 7 -->
+
+
+
+
+      <!-- Test scope dependencies -->
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+      </dependency>
+
+      <!-- Optional, but highly recommended -->
+      <!-- Arquillian allows you to test enterprise code such as EJBs and 
+         Transactional(JTA) JPA from JUnit/TestNG -->
+
+      <dependency>
+         <groupId>javax</groupId>
+         <artifactId>javaee-api</artifactId>
+         <version>6.0</version>
+      </dependency>
+
+   </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <artifactId>maven-ejb-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+               <!-- Tell Maven we are using EJB 3.1 -->
+               <ejbVersion>3.1</ejbVersion>
+            </configuration>
+         </plugin>
+      </plugins>
+   </build>
+
+   <profiles>
+      <profile>
+         <!-- The default profile skips all tests, though you can tune it 
+            to run just unit tests based on a custom pattern -->
+         <!-- Seperate profiles are provided for running all tests, including 
+            Arquillian tests that execute in the specified container -->
+         <id>default</id>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-surefire-plugin</artifactId>
+                  <version>2.4.3</version>
+                  <configuration>
+                     <skip>true</skip>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+
+
+
+
+
+   </profiles>
+
+</project>
