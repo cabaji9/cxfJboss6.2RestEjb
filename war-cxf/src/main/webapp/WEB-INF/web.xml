@@ -17,20 +17,15 @@
         <servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet
         </servlet-class>
         <init-param>
-            <param-name>jaxrs.serviceClasses</param-name>
-            <param-value>personal.rest.ProducerMsg</param-value>
-        </init-param>
-        <init-param>
-            <param-name>jaxrs.providers</param-name>
+            <param-name>javax.ws.rs.Application</param-name>
             <param-value>
-                org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider
-                (writeXsiType=false)
+                personal.rest.JaxRsConfigApplication
             </param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>CXFNonSpringJaxrsServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
 

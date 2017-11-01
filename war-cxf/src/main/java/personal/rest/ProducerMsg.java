@@ -1,6 +1,8 @@
 package personal.rest;
 
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import personal.ejb.TestEJBRemote;
 import personal.rest.vo.RequestVo;
 import personal.rest.vo.ResponseVo;
@@ -15,6 +17,7 @@ import java.util.logging.Logger;
  * Created by HW on 10/19/16.
  */
 @Path("/rest")
+@Api(value = "rest", description = "")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ProducerMsg {
@@ -26,7 +29,7 @@ public class ProducerMsg {
 
 
     public ProducerMsg() {
-        // testEJBRemote= (TestEJBRemote) Lookup.getEjb("java:global/completeEar/completeEar-ejb-1.0-SNAPSHOT/TestEJBImpl!personal.ejb.TestEJBRemote");
+         testEJBRemote= (TestEJBRemote) Lookup.getEjb("java:global/completeEar/completeEar-ejb-1.0-SNAPSHOT/TestEJBImpl!personal.ejb.TestEJBRemote");
     }
 
 

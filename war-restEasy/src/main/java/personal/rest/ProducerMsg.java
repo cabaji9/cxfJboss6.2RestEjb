@@ -1,5 +1,6 @@
 package personal.rest;
 
+import io.swagger.annotations.Api;
 import personal.rest.vo.RequestVo;
 import personal.rest.vo.ResponseVo;
 
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by HW on 10/19/16.
  */
+@Api
 @Path("/rest")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
