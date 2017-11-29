@@ -1,7 +1,10 @@
 package personal.rest;
 
 import io.swagger.jaxrs.config.BeanConfig;
+import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
+import org.codehaus.jackson.jaxrs.JsonMappingExceptionMapper;
+import org.codehaus.jackson.jaxrs.JsonParseExceptionMapper;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -29,6 +32,9 @@ public class JaxRsConfigApplication extends Application {
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new HashSet<>();
         resources.add(ProducerMsg.class);
+
+        resources.add(JsonMappingExceptionMapper.class);
+        resources.add(JsonParseExceptionMapper.class);
 
         resources.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         resources.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
