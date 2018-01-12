@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -50,10 +52,13 @@ public class ProducerMsg {
 
     @GET
     @Path("/name")
-    @ApiOperation(value = "Obtiene nombres", notes = "SUPER RESUMEN",response = String.class)
+    @ApiOperation(value = "Obtiene nombres", notes = "SUPER RESUMEN",response = String.class,responseContainer = "List")
     public Response obtainNames() {
         String name = testEJBRemote.obtainName();
-        return Response.ok(name).build();
+        List<String> names = new ArrayList<>();
+        names.add(name);
+        names.add("hola");
+        return Response.ok(names).build();
     }
 
 
