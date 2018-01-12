@@ -1,4 +1,4 @@
-package personal.rest;
+package personal;
 
 import org.jboss.resteasy.plugins.server.undertow.UndertowJaxrsServer;
 import org.jboss.resteasy.test.TestPortProvider;

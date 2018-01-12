@@ -1,4 +1,4 @@
-package personal.rest;
+package personal;
 
 import io.swagger.jaxrs.config.BeanConfig;
 

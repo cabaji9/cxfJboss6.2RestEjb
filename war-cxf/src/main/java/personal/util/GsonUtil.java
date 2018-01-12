@@ -1,4 +1,4 @@
-package personal.rest.util;
+package personal.util;
 
 import com.google.gson.Gson;
 

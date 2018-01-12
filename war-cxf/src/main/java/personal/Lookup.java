@@ -1,4 +1,4 @@
-package personal.rest;
+package personal;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

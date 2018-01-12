@@ -1,8 +1,8 @@
-package personal.rest;
+package personal;
 
 import io.swagger.annotations.Api;
-import personal.rest.vo.RequestVo;
-import personal.rest.vo.ResponseVo;
+import personal.vo.RequestVo;
+import personal.vo.ResponseVo;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

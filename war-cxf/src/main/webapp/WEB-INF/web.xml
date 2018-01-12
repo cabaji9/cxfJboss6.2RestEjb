@@ -19,7 +19,7 @@
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
             <param-value>
-                personal.rest.JaxRsConfigApplication
+                personal.config.JaxRsConfigApplication
             </param-value>
         </init-param>
     </servlet>

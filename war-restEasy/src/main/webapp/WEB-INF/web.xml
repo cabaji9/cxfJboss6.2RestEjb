@@ -29,7 +29,7 @@
         </servlet-class>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
-            <param-value>personal.rest.RestApplication</param-value>
+            <param-value>personal.RestApplication</param-value>
         </init-param>
     </servlet>
 

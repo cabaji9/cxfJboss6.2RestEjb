@@ -1,4 +1,4 @@
-package personal.rest.vo;
+package personal.vo;
 
 /**
  * Created by Hyun Woo Son on 10/19/17.

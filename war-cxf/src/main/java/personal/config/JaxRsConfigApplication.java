@@ -1,12 +1,12 @@
-package personal.rest;
+package personal.config;
 
+import com.fasterxml.jackson.jaxrs.base.JsonMappingExceptionMapper;
+import com.fasterxml.jackson.jaxrs.base.JsonParseExceptionMapper;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.swagger.jaxrs.config.BeanConfig;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
-import org.codehaus.jackson.jaxrs.JsonMappingExceptionMapper;
-import org.codehaus.jackson.jaxrs.JsonParseExceptionMapper;
+import personal.config.exception.mapper.ValidationExceptionMapperCustom;
+import personal.rest.ProducerMsg;
 
-import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,11 +18,15 @@ public class JaxRsConfigApplication extends Application {
 
     public JaxRsConfigApplication(){
         BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0.2");
+        beanConfig.setVersion("1.0.0");
         beanConfig.setSchemes(new String[]{"http","https"});
-        beanConfig.setHost("localhost:8080/cxf-web-1.0-SNAPSHOT");
-        beanConfig.setBasePath("/api");
+        beanConfig.setBasePath("/cxf-example/api");
         beanConfig.setResourcePackage("personal.rest");
+        beanConfig.setDescription("Servicios Rest ");
+        beanConfig.setTitle("Servicios Rest Ejemplo");
+
+        beanConfig.setContact("cabaji9@gmail.com");
+        beanConfig.setLicense("Open source");
         beanConfig.setScan(true);
         beanConfig.setPrettyPrint(true);
     }
@@ -35,6 +39,10 @@ public class JaxRsConfigApplication extends Application {
 
         resources.add(JsonMappingExceptionMapper.class);
         resources.add(JsonParseExceptionMapper.class);
+
+        //bean validation
+        resources.add(ValidationExceptionMapperCustom.class);
+        resources.add(BeanValidationInInterceptor.class);
 
         resources.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         resources.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
