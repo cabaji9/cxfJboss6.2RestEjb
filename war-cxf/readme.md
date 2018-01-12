@@ -4,8 +4,11 @@ This example configures a rest with call to ejb on jboss 6.2
 
 It uses
  
-Apache cxf 2.6 other versions are not working due to classpath errors.
-And to use json - jackson-jaxb
+Apache cxf 3.1.2 
+And to use json - jackson-jaxb 2.9.3
+Swagger 1.5.4 for rest documentation.
+Bean validation 1.1 to validate the beans on the rest.
+
 
 
 
