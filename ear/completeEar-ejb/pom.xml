@@ -14,6 +14,11 @@
 
    <name>completeEar EJB module</name>
 
+   <properties>
+      <version.slf4j-log4j12>1.7.5</version.slf4j-log4j12>
+      <version.org.slf4j>1.7.21</version.org.slf4j>
+   </properties>
+
    <dependencies>
 
       <!-- Declare the APIs we depend on and need for compilation. All of 
@@ -27,12 +32,32 @@
          in JBoss AS 7 -->
 
 
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-api</artifactId>
+         <version>${version.org.slf4j}</version>
+      </dependency>
+
+      <dependency>
+         <groupId>org.slf4j</groupId>
+         <artifactId>slf4j-log4j12</artifactId>
+         <version>${version.slf4j-log4j12}</version>
+         <scope>test</scope>
+      </dependency>
+
 
 
       <!-- Test scope dependencies -->
       <dependency>
          <groupId>junit</groupId>
          <artifactId>junit</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss</groupId>
+         <artifactId>client</artifactId>
+         <version>6.2</version>
+         <scope>test</scope>
       </dependency>
 
       <!-- Optional, but highly recommended -->
