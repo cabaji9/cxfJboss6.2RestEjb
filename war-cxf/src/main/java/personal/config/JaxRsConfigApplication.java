@@ -4,6 +4,7 @@ import com.fasterxml.jackson.jaxrs.base.JsonMappingExceptionMapper;
 import com.fasterxml.jackson.jaxrs.base.JsonParseExceptionMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.swagger.jaxrs.config.BeanConfig;
+import org.apache.cxf.interceptor.LoggingInInterceptor;
 import personal.config.exception.mapper.ValidationExceptionMapperCustom;
 import personal.rest.ProducerMsg;
 
@@ -43,6 +44,8 @@ public class JaxRsConfigApplication extends Application {
         //bean validation
         resources.add(ValidationExceptionMapperCustom.class);
         resources.add(BeanValidationInInterceptor.class);
+        resources.add(LoggingInInterceptor.class);
+        resources.add(LogInInterceptor.class);
 
         resources.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         resources.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);

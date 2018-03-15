@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 /**
  * Created by Hyun Woo Son on 10/19/17.
@@ -25,6 +22,16 @@ public class RequestVo {
     @NotNull
     private Integer value;
 
+    @Size(max = 2)
+    private String valorMinimo;
+
+    public String getValorMinimo() {
+        return valorMinimo;
+    }
+
+    public void setValorMinimo(String valorMinimo) {
+        this.valorMinimo = valorMinimo;
+    }
 
     @ApiModelProperty(value = "Valor que va a ser ingresado", allowableValues = "Only letters",required = true,example = "Message")
     public String getRequestMsg() {
