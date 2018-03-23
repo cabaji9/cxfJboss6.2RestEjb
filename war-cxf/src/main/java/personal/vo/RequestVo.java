@@ -42,7 +42,7 @@ public class RequestVo {
         this.requestMsg = requestMsg;
     }
 
-    @ApiModelProperty(value = "Integer value to be entered", allowableValues = "1..9",required = true,example = "1")
+    @ApiModelProperty(value = "Integer value to be entered", allowableValues = "1..9",required = true,example = "999",dataType = "java.lang.Integer")
     public Integer getValue() {
         return value;
     }

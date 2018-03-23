@@ -5,9 +5,11 @@ import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.client.WebClient;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.ContentDisposition;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
-import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationInInterceptor;
-import org.apache.cxf.jaxrs.validation.JAXRSBeanValidationOutInterceptor;
+import org.apache.cxf.jaxrs.provider.MultipartProvider;
 import org.apache.cxf.message.Message;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -25,10 +27,12 @@ import personal.vo.ResponseVo;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -78,7 +82,7 @@ public class ProducerMsgTest {
         requestVo.setRequestMsg("FUNCIONA");
         requestVo.setValue(1);
         String json = GsonUtil.getInstance().toJson(requestVo);
-        WebClient client = obtainClient(ENDPOINT_ADDRESS);
+        WebClient client = obtainClient(ENDPOINT_ADDRESS,"/rest/sent");
         Response response = client.post(json,Response.class);
         assertTrue(response != null);
 
@@ -98,7 +102,7 @@ public class ProducerMsgTest {
         requestVo.setRequestMsg("FUNCIONA!!");
         requestVo.setValue(987389);
         String json = GsonUtil.getInstance().toJson(requestVo);
-        WebClient client = obtainClient(ENDPOINT_ADDRESS);
+        WebClient client = obtainClient(ENDPOINT_ADDRESS,"/rest/sent");
         Response response = client.post(json,Response.class);
         assertTrue(response != null);
 
@@ -109,14 +113,43 @@ public class ProducerMsgTest {
     }
 
 
-    private WebClient obtainClient(String ENDPOINT_ADDRESS){
+    private WebClient obtainClient(String ENDPOINT_ADDRESS,String path){
         List<Object> providers = new ArrayList<>();
         // add custom providers if any
         providers.add(new JacksonJaxbJsonProvider());
+        providers.add(new MultipartProvider());
         WebClient client = WebClient.create(ENDPOINT_ADDRESS,providers);
         client.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
-        client.path("/rest/sent");
+        client.path(path);
         return  client;
+    }
+
+
+    @Test
+    public void testUploadFile(){
+
+        InputStream in = getClass().getClassLoader().getResourceAsStream("image.jpeg");
+
+        RequestVo requestVo = new RequestVo();
+        requestVo.setRequestMsg("FUNCIONA!!");
+        requestVo.setValue(987389);
+        String json = GsonUtil.getInstance().toJson(requestVo);
+
+        assertNotNull(in);
+
+        WebClient client = obtainClient(ENDPOINT_ADDRESS,"/rest/upload");
+        client.type(MediaType.MULTIPART_FORM_DATA);
+        ContentDisposition cd = new ContentDisposition("attachment;filename=image.jpeg");
+        Attachment att = new Attachment("upfile", in, cd);
+        Attachment attJson = new Attachment("data",MediaType.APPLICATION_JSON,json);
+        MultipartBody multipartBody =new MultipartBody(Arrays.asList(att,attJson));
+        ProducerResponseVo responseVo =client.post(multipartBody,ProducerResponseVo.class);
+
+        assertTrue(!responseVo.getMessage().isEmpty());
+        logger.info("responsevo :{}",responseVo);
+
+
+
     }
 
 

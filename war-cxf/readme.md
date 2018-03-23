@@ -25,5 +25,11 @@ Copy war to deployments folder on jboss.
 ```
 
 
-## 
+## FILE UPLOAD
+
+It has a method with a multipart/form-data to add json and a file.
+
+there is an example with html to test it.
+
+indexTestRestMultipart.html
 

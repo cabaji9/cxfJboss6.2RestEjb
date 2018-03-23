@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2">
+	<deployment>
+		<exclude-subsystems>
+			<subsystem name="jaxrs" />
+		</exclude-subsystems>
+		<exclusions>
+			<module name="javaee.api"/>
+			<module name="javax.validation.api"/>
+			<module name="javax.faces.api"/>
+			<module name="javax.faces.api" slot="1.2"/>
+			<module name="org.hibernate.validator"/>
+		</exclusions>
+		<dependencies>
+			<module name="javaee.api">
+				<imports>
+					<exclude-set>
+						<path name="javax/ws/rs"/>
+						<path name="javax/ws/rs/core"/>
+						<path name="javax/ws/rs/ext"/>
+						<path name="javax/validation"/>
+						<path name="javax/validation/bootstrap"/>
+						<path name="javax/validation/spi"/>
+						<path name="javax/validation/constraints"/>
+						<path name="javax/validation/groups"/>
+						<path name="javax/validation/metadata"/>
+					</exclude-set>
+				</imports>
+			</module>
+		</dependencies>
+	</deployment>
+</jboss-deployment-structure>

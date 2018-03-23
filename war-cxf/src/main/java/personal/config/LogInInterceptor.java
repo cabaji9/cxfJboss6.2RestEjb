@@ -25,6 +25,7 @@ public class LogInInterceptor extends AbstractPhaseInterceptor<Message> implemen
 
     public LogInInterceptor(){
         super(Phase.PRE_INVOKE);
+        addAfter(BeanValidationInInterceptor.class.getName());
     }
 
     @Override

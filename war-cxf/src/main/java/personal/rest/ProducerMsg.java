@@ -2,6 +2,11 @@ package personal.rest;
 
 
 import io.swagger.annotations.*;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.cxf.helpers.IOUtils;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.Multipart;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import personal.Lookup;
@@ -16,8 +21,11 @@ import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 
 /**
@@ -86,6 +94,89 @@ public class ProducerMsg {
 
 
 
+    @POST
+    @Path("/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="data", value = "Request vo Json Añadir el archivo con el .json",
+                    dataType = "java.io.File", paramType = "form"),
+            @ApiImplicitParam(name="upfile", value = "file",
+                    required = true, dataType = "java.io.File", paramType = "form")})
+    public Response uploadFile(@Multipart(value = "data", type = "application/json") RequestVo requestVo,
+                               @Multipart("upfile") Attachment attachment) throws Exception{
+
+        String filename = attachment.getContentDisposition().getParameter("filename");
+        logger.info("filename : {}",filename);
+        java.nio.file.Path path = Paths.get("/Users/User/Downloads/test/" + filename);
+        InputStream in = attachment.getObject(InputStream.class);
+        Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
+        logger.info("requestVo :{}",requestVo);
+        return obtainSuccessResponse("SUCCESS FILE UPLOADED : "+requestVo.getRequestMsg());
+
+    }
+
+    @GET
+    @Path("/obtain-file-base64")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ok everything works") })
+    public Response getFileBase64() throws Exception{
+
+        InputStream in = getClass().getClassLoader().getResourceAsStream("image.jpeg");
+
+        ProducerResponseVo producerResponseVo =new ProducerResponseVo();
+        producerResponseVo.setMessage("FILA!!");
+        producerResponseVo.setImage(obtainImageOnBase64(in));
+
+        List<Attachment> atts = new LinkedList<>();
+        atts.add(new Attachment("responseVo", "application/json",producerResponseVo));
+        atts.add(new Attachment("image", "application/octet-stream", in));
+        return Response.ok().entity(producerResponseVo).build();
+
+    }
+
+
+    private String obtainImageOnBase64(InputStream in) throws Exception{
+        byte[] bytes =  org.apache.commons.io.IOUtils.toByteArray(in);
+        return  Base64.encodeBase64String(bytes);
+    }
+
+
+    @GET
+    @Path("/obtain-file")
+    @Produces(MediaType.MULTIPART_FORM_DATA)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ok everything works, Returns a mulipart/form -> Swagger dont know how to parse this. Use a client like postman") })
+    public MultipartBody getFileData(){
+
+        InputStream in = getClass().getClassLoader().getResourceAsStream("image.jpeg");
+
+        ProducerResponseVo producerResponseVo =new ProducerResponseVo();
+        producerResponseVo.setMessage("FILA!!");
+
+        List<Attachment> atts = new LinkedList<>();
+        atts.add(new Attachment("responseVo", "application/json",producerResponseVo));
+        atts.add(new Attachment("image", "application/octet-stream", in));
+        return new MultipartBody(atts, true);
+
+    }
+
+
+
+    @GET
+    @Path("/obtain-file-map")
+    @Produces("multipart/mixed")
+    public Map<String, Object> getFileDataMap() {
+
+        InputStream in = getClass().getClassLoader().getResourceAsStream("image.jpeg");
+
+        ProducerResponseVo producerResponseVo = new ProducerResponseVo();
+        producerResponseVo.setMessage("FILA MAP!!");
+
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("application/json", producerResponseVo);
+        map.put("application/octet-stream", in);
+        return map;
+    }
 
 
     private Response obtainErrorResponse(String msg){
