@@ -117,7 +117,6 @@ public class ProducerMsgTest {
         List<Object> providers = new ArrayList<>();
         // add custom providers if any
         providers.add(new JacksonJaxbJsonProvider());
-        providers.add(new MultipartProvider());
         WebClient client = WebClient.create(ENDPOINT_ADDRESS,providers);
         client.accept(MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
         client.path(path);

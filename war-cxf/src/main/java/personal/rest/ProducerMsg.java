@@ -111,6 +111,7 @@ public class ProducerMsg {
         InputStream in = attachment.getObject(InputStream.class);
         Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
         logger.info("requestVo :{}",requestVo);
+        in.close();
         return obtainSuccessResponse("SUCCESS FILE UPLOADED : "+requestVo.getRequestMsg());
 
     }

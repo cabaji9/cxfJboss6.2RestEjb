@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Using the XMLHttpRequest object</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<input type="file" id="file-select" name="photos[]"/>
+
+<button type="button" onclick="uploadFile()">Upload file with</button>
+
+<p id="demo"></p>
+
+<hr/>
+<br>
+
+
+<image id="img-test"></image>
+
+<button type="button" onclick="obtainImage()">Load Image</button>
+
+<script>
+
+    function obtainImage() {
+        var url = "http://localhost:8080/cxf-example/api/rest/obtain-file-base64";
+
+        $.ajax({
+            url: url,
+            success: function (result) {
+
+                $('#img-test').attr('src', 'data:image/png;base64,' + result.image);
+                console.log(result);
+            },
+            error: function (jqXHR, errorThrown, textStatus) {
+                alert("Ajax error: " + jqXHR.status + " - " + jqXHR.statusText);
+                console.log(jqXHR.responseText);
+            },
+
+        });
+
+
+    }
+
+
+    function uploadFile() {
+
+        var formData = new FormData();
+        var fileSelect = document.getElementById('file-select');
+        var files = fileSelect.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+
+
+            // Add the file to the request.
+            formData.append('upfile', file, file.name);
+        }
+
+
+        var requestVo = {
+            "requestMsg": "Message",
+            "value": 999,
+            "valorMinimo": "string"
+        };
+
+
+        var blob = new Blob([JSON.stringify(requestVo)], {
+            type: "application/json"
+        })
+        formData.append('data', blob);
+
+
+        var url = "http://localhost:8080/cxf-example/api/rest/upload";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("demo").innerHTML =
+                    this.responseText;
+            }
+        };
+        xhttp.open("POST", url, true);
+        xhttp.send(formData);
+
+    }
+</script>
+
+</body>
+</html>
