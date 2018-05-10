@@ -16,31 +16,10 @@
 <br>
 
 
-<image id="img-test"></image>
-
-<button type="button" onclick="obtainImage()">Load Image</button>
+<a id="linkDownload" href="1">   DESCARGA</a>
 
 <script>
 
-    function obtainImage() {
-        var url = "http://localhost:8080/cxf-example/api/rest/obtain-file-base64";
-
-        $.ajax({
-            url: url,
-            success: function (result) {
-
-                $('#img-test').attr('src', 'data:image/png;base64,' + result.image);
-                console.log(result);
-            },
-            error: function (jqXHR, errorThrown, textStatus) {
-                alert("Ajax error: " + jqXHR.status + " - " + jqXHR.statusText);
-                console.log(jqXHR.responseText);
-            },
-
-        });
-
-
-    }
 
 
     function uploadFile() {
@@ -62,6 +41,8 @@
             "requestMsg": "Message",
             "value": 999,
             "valorMinimo": "string"
+
+
         };
 
 
@@ -71,12 +52,17 @@
         formData.append('data', blob);
 
 
-        var url = "http://localhost:8080/cxf-example/api/rest/upload";
+        var url = "http://localhost:8080/cxf-example/api/rest/upload-mock-base";
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("demo").innerHTML =
                     this.responseText;
+
+                var urlDownload = "http://localhost:8080/cxf-example/api/rest/obtain-file-base/";
+                var id =JSON.parse(this.response).image;
+
+                $('#linkDownload').attr('href', urlDownload+ id);
             }
         };
         xhttp.open("POST", url, true);

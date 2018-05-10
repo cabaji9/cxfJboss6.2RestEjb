@@ -3,7 +3,6 @@ package personal.rest;
 
 import io.swagger.annotations.*;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.cxf.helpers.IOUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
@@ -11,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import personal.Lookup;
 import personal.ejb.TestEJBRemote;
+import personal.mock.base.Base;
+import personal.mock.base.entity.FileData;
 import personal.vo.ProducerResponseVo;
 import personal.vo.RequestVo;
 import personal.vo.ResponseVo;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.MessageFormat;
 import java.util.*;
 
 
@@ -42,6 +44,7 @@ public class ProducerMsg {
 
 
     private TestEJBRemote testEJBRemote;
+    private Base base = Base.getInstance();
 
 
     public ProducerMsg() {
@@ -106,7 +109,12 @@ public class ProducerMsg {
                                @Multipart("upfile") Attachment attachment) throws Exception{
 
         String filename = attachment.getContentDisposition().getParameter("filename");
+
+        String contentType =attachment.getContentType().toString();
+
         logger.info("filename : {}",filename);
+        logger.info("contentType : {}",contentType);
+
         java.nio.file.Path path = Paths.get("/Users/User/Downloads/test/" + filename);
         InputStream in = attachment.getObject(InputStream.class);
         Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
@@ -115,6 +123,72 @@ public class ProducerMsg {
         return obtainSuccessResponse("SUCCESS FILE UPLOADED : "+requestVo.getRequestMsg());
 
     }
+
+
+
+
+    @POST
+    @Path("/upload-mock-base")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="data", value = "Request vo Json Añadir el archivo con el .json",
+                    dataType = "java.io.File", paramType = "form"),
+            @ApiImplicitParam(name="upfile", value = "file",
+                    required = true, dataType = "java.io.File", paramType = "form")})
+    public Response uploadFileMockBase(@Multipart(value = "data", type = "application/json") RequestVo requestVo,
+                               @Multipart("upfile") Attachment attachment) throws Exception{
+
+        logger.info("requestVo :{}",requestVo);
+        Integer id =saveFileData(attachment);
+
+        return obtainSuccessResponse("SUCCESS FILE UPLOADED {0} with id {1} "+requestVo.getRequestMsg(),id+"",id);
+
+    }
+
+
+    @GET
+    @Path("/obtain-file-base/{id}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Returns the file") })
+    public Response getFileDataBase(@PathParam("id") Integer id){
+        Response response;
+        FileData fileData =base.get(id);
+        if(fileData == null){
+            response = obtainErrorResponse("FAILED! ");
+        }
+        else{
+            response =  Response.ok().entity(fileData.getFile())
+                    .header("Content-Disposition", "attachment; filename=\"" + fileData.getFileName() + "\"" ) .build();
+        }
+        return response;
+    }
+
+
+    private Integer saveFileData(Attachment attachment) throws Exception{
+        String filename = attachment.getContentDisposition().getParameter("filename");
+        String contentType =attachment.getContentType().toString();
+
+        Integer id = base.getId();
+        logger.info("filename : {}",filename);
+        logger.info("contentType : {}",contentType);
+        InputStream in = attachment.getObject(InputStream.class);
+
+
+
+        FileData fileData = new FileData();
+        fileData.setFileName(filename);
+        fileData.setContentType(contentType);
+        fileData.setFile(org.apache.commons.io.IOUtils.toByteArray(in));
+
+        logger.info("filedata {}",fileData);
+
+        base.put(id,fileData);
+
+        in.close();
+        return id;
+    }
+
 
     @GET
     @Path("/obtain-file-base64")
@@ -127,10 +201,6 @@ public class ProducerMsg {
         ProducerResponseVo producerResponseVo =new ProducerResponseVo();
         producerResponseVo.setMessage("FILA!!");
         producerResponseVo.setImage(obtainImageOnBase64(in));
-
-        List<Attachment> atts = new LinkedList<>();
-        atts.add(new Attachment("responseVo", "application/json",producerResponseVo));
-        atts.add(new Attachment("image", "application/octet-stream", in));
         return Response.ok().entity(producerResponseVo).build();
 
     }
@@ -186,9 +256,16 @@ public class ProducerMsg {
         return  Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity(responseVo).build();
     }
 
-    private Response obtainSuccessResponse(String msg){
+    private Response obtainSuccessResponse(String msg,Object... vars){
         ProducerResponseVo producerResponseVo = new ProducerResponseVo();
-        producerResponseVo.setMessage(msg);
+        producerResponseVo.setMessage(MessageFormat.format(msg,vars));
+        return Response.ok().entity(producerResponseVo).build();
+    }
+
+    private Response obtainSuccessResponse(String msg,String id,Object... vars){
+        ProducerResponseVo producerResponseVo = new ProducerResponseVo();
+        producerResponseVo.setImage(id+"");
+        producerResponseVo.setMessage(MessageFormat.format(msg,vars));
         return Response.ok().entity(producerResponseVo).build();
     }
 

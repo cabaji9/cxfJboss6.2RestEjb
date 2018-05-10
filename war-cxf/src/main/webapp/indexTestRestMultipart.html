@@ -18,7 +18,14 @@
 
 <image id="img-test"></image>
 
+
 <button type="button" onclick="obtainImage()">Load Image</button>
+
+<hr>
+
+<button type="button" onclick="obtainImageData()">Load Image Data to make link</button>
+
+<a id="linkDownload">   DESCARGA</a>
 
 <script>
 
@@ -42,6 +49,42 @@
 
     }
 
+    function obtainBlobFromBase64(base64str){
+        var binary = atob(base64str.replace(/\s/g, ''));
+        var len = binary.length;
+        var buffer = new ArrayBuffer(len);
+        var view = new Uint8Array(buffer);
+        for (var i = 0; i < len; i++) {
+            view[i] = binary.charCodeAt(i);
+        }
+
+// create the blob object with content-type "application/pdf"
+        var blob = new Blob( [view], { type: "image/png" });
+            return blob;
+    }
+
+
+    function obtainImageData(){
+
+        var url = "http://localhost:8080/cxf-example/api/rest/obtain-file-base64";
+
+        $.ajax({
+            url: url,
+            success: function (result) {
+                var blob = obtainBlobFromBase64(result.image);
+                var url = URL.createObjectURL(blob);
+
+                $('#linkDownload').attr('href', url);
+
+            },
+            error: function (jqXHR, errorThrown, textStatus) {
+                alert("Ajax error: " + jqXHR.status + " - " + jqXHR.statusText);
+                console.log(jqXHR.responseText);
+            },
+
+        });
+    }
+
 
     function uploadFile() {
 
@@ -62,6 +105,8 @@
             "requestMsg": "Message",
             "value": 999,
             "valorMinimo": "string"
+
+
         };
 
 
