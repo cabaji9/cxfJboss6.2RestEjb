@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Using the XMLHttpRequest object</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+TOKEN INPUT
+<input id="token_input" />
+<br>
+<button type="button" onclick="callRest()">Call rest</button>
+
+<button type="button" onclick="callPutRest()">Call put rest</button>
+
+<p id="demo"></p>
+
+<hr/>
+<br>
+
+
+<script>
+
+
+
+    function callRest() {
+
+        var token = document.getElementById("token_input").value;
+
+        var requestVo = {
+            "terminal": "00000",
+            "agencia": "00",
+            "operador": 0,
+            "canal": "string",
+            "empresa": 0
+        };
+
+
+        var url = "http://10.161.68.56:8680/kie-server/services/rest/server/containers/rhmupi-container:com.mupi.credito:solicitud-credito-proceso:1.0.0-SNAPSHOT/processes/instances/65/variable/dataInicialSolCredito";
+
+        url =  "http://localhost:8580/workflow/api/ubicacion-geografica/traer-pais";
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        };
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Authorization","Bearer "+token);
+        xhttp.setRequestHeader("Content-type","application/json");
+        xhttp.send(JSON.stringify(requestVo));
+
+    }
+
+
+
+    function callPutRest(){
+ var token = document.getElementById("token_input").value;
+
+        var requestVo = {
+            "terminal": "00000",
+            "agencia": "00",
+            "operador": 0,
+            "canal": "string",
+            "empresa": 0
+        };
+
+
+        var url = "http://10.161.68.56:8680/kie-server/services/rest/server/containers/rhmupi-container:com.mupi.credito:solicitud-credito-proceso:1.0.0-SNAPSHOT/tasks/2/states/claimed";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+            }
+        };
+        xhttp.open("PUT", url, true);
+        xhttp.setRequestHeader("Authorization","Bearer "+token);
+        xhttp.setRequestHeader("Content-type","application/json");
+        xhttp.send();
+
+
+    }
+
+
+
+
+
+</script>
+
+</body>
+</html>

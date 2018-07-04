@@ -77,6 +77,9 @@ window.onload = function() {
     url: window.location.origin + "/cxf-example/api/swagger.json",
     dom_id: '#swagger-ui',
     deepLinking: true,
+      sorter : "alpha",
+      operationsSorter : "alpha",
+      tagsSorter : "alpha",
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset

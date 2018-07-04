@@ -8,8 +8,6 @@ import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import personal.Lookup;
-import personal.ejb.TestEJBRemote;
 import personal.mock.base.Base;
 import personal.mock.base.entity.FileData;
 import personal.vo.ProducerResponseVo;
@@ -17,17 +15,20 @@ import personal.vo.RequestVo;
 import personal.vo.ResponseVo;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,33 +44,11 @@ public class ProducerMsg {
     private static Logger logger = LoggerFactory.getLogger(ProducerMsg.class);
 
 
-    private TestEJBRemote testEJBRemote;
     private Base base = Base.getInstance();
 
 
     public ProducerMsg() {
-         testEJBRemote= (TestEJBRemote) Lookup.getEjb("java:global/completeEar/completeEar-ejb-1.0-SNAPSHOT/TestEJBImpl!personal.ejb.TestEJBRemote");
-    }
-
-
-    @GET
-    @Path("/name/{name}")
-    public void doGet(
-            @ApiParam(value = "name to add to ejb", required = true,example = "Juan")
-            @PathParam("name")@NotNull @Size(max = 20)  String name) {
-        logger.info("called rest service");
-        testEJBRemote.addName(name);
-    }
-
-    @GET
-    @Path("/name")
-    @ApiOperation(value = "Obtiene nombres", notes = "SUPER RESUMEN",response = String.class,responseContainer = "List")
-    public Response obtainNames() {
-        String name = testEJBRemote.obtainName();
-        List<String> names = new ArrayList<>();
-        names.add(name);
-        names.add("hola");
-        return Response.ok(names).build();
+        base = Base.getInstance();
     }
 
 
@@ -230,6 +209,45 @@ public class ProducerMsg {
         return new MultipartBody(atts, true);
 
     }
+
+    @GET
+    @Path("/stream")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getStream(){
+
+
+
+
+        StreamingOutput fileStream =  new StreamingOutput()
+        {
+            @Override
+            public void write(java.io.OutputStream output) throws IOException, WebApplicationException
+            {
+                logger.info("called write");
+                try
+                {
+                    InputStream in = getClass().getClassLoader().getResourceAsStream("image.jpeg");
+                    byte[] data = org.apache.commons.io.IOUtils.toByteArray(in);
+                    output.write(data);
+                    output.flush();
+                }
+                catch (Exception e)
+                {
+                    throw new WebApplicationException("File Not Found !!");
+                }
+            }
+        };
+        return Response
+                .ok(fileStream, MediaType.APPLICATION_OCTET_STREAM)
+                .header("content-disposition","attachment; filename = myfile.jpeg")
+                .build();
+
+
+
+
+    }
+
+
 
 
 

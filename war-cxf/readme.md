@@ -10,6 +10,15 @@ Swagger 1.5.4 for rest documentation.
 Bean validation 1.1 to validate the beans on the rest.
 
 
+### SWAGGER
+
+Swagger to order it uses:
+
+  sorter : "alpha",
+  operationsSorter : "alpha",
+  tagsSorter : "alpha",
+
+
 
 
 ## COMPILE
