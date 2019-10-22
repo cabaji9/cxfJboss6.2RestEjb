@@ -10,6 +10,7 @@
 			<module name="javax.faces.api"/>
 			<module name="javax.faces.api" slot="1.2"/>
 			<module name="org.hibernate.validator"/>
+			<module name="org.hibernate.validator.cdi" />
 		</exclusions>
 		<dependencies>
 			<module name="javaee.api">
@@ -18,6 +19,7 @@
 						<path name="javax/ws/rs"/>
 						<path name="javax/ws/rs/core"/>
 						<path name="javax/ws/rs/ext"/>
+						<path name="javax/ws/rs/container"/>
 						<path name="javax/validation"/>
 						<path name="javax/validation/bootstrap"/>
 						<path name="javax/validation/spi"/>
