@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Using the XMLHttpRequest object</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+TOKEN INPUT
+<input id="token_input" />
+<br>
+
+ID FILE
+<input id="id_file" value="124" />
+
+<br>
+
+<button type="button" onclick="callRest()">Generate link</button>
+
+<button type="button" onclick="callRestOpen()">download open</button>
+
+
+
+<button type="button" onclick="callRestOpenDirectly()">download directly</button>
+<p id="demo"></p>
+
+
+<a id="linkDownload">   DESCARGA</a>
+<hr/>
+<br>
+
+
+
+<script>
+
+
+
+    function callRest() {
+
+        var token = document.getElementById("token_input").value;
+
+        var idFile = document.getElementById("id_file").value;
+
+
+
+        var url = "http://localhost:8580/workflow/api/archivo/"+idFile;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+
+
+            if (this.readyState == 4 && this.status == 200) {
+    
+
+
+                 var blob = this.response;
+                var url = URL.createObjectURL(blob);
+
+                  var fileName = xhttp.getResponseHeader("fileName");
+                   console.log(fileName);
+                   console.log(xhttp.getResponseHeader("mimeType"))
+
+                $('#linkDownload').attr('href', url);
+                $('#linkDownload').attr('download', fileName);
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.responseType="blob";
+        xhttp.setRequestHeader("Authorization","Bearer "+token);
+        xhttp.setRequestHeader("Content-type","application/json");
+        xhttp.send();
+
+    }
+
+
+
+
+     function callRestOpen() {
+
+        var token = document.getElementById("token_input").value;
+
+
+  var idFile = document.getElementById("id_file").value;
+
+
+
+        var url = "http://localhost:8580/workflow/api/archivo/"+idFile;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+
+
+            if (this.readyState == 4 && this.status == 200) {
+
+
+                  var fileName = xhttp.getResponseHeader("fileName");
+                   console.log(fileName);
+                   var mimeType = xhttp.getResponseHeader("mimeType");
+                   console.log(mimeType)
+    
+                 
+                 var blob = new Blob([this.response], { type: mimeType });
+                var url = URL.createObjectURL(blob);
+                    window.open(url,fileName);
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.responseType="blob";
+        xhttp.setRequestHeader("Authorization","Bearer "+token);
+        xhttp.setRequestHeader("Content-type","application/json");
+        xhttp.send();
+
+    }
+
+
+     function callRestOpenDirectly() {
+
+        var token = document.getElementById("token_input").value;
+        var idFile = document.getElementById("id_file").value;
+ 
+        var url = "http://localhost:8580/workflow/api/archivo/"+idFile;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+
+
+            if (this.readyState == 4 && this.status == 200) {
+
+
+                  var fileName = xhttp.getResponseHeader("fileName");
+                   console.log(fileName);
+                   var mimeType = xhttp.getResponseHeader("mimeType");
+                   console.log(mimeType)
+    
+                 
+                 var blob = new Blob([this.response], { type: mimeType });
+                var url = URL.createObjectURL(blob);
+                   
+let a = document.createElement("a");
+  a.style.cssText = "display: none";
+ document.body.appendChild(a);
+  a.href = url;
+  a.download =fileName; // gives it a name via an a tag
+  a.click();
+  URL.revokeObjectURL(url);
+
+  document.body.removeChild(a);
+
+
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.responseType="blob";
+        xhttp.setRequestHeader("Authorization","Bearer "+token);
+        xhttp.setRequestHeader("Content-type","application/json");
+        xhttp.send();
+
+    }
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

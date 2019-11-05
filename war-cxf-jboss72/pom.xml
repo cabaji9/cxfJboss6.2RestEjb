@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cxf-web</artifactId>
+    <groupId>personal</groupId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <version.gson>2.6.2</version.gson>
+        <cxf.version>3.1.2</cxf.version>
+        <version.org.slf4j>1.7.21</version.org.slf4j>
+
+        <version.jaxrs-api_2.1_spec>1.0.1.Final-redhat-00001</version.jaxrs-api_2.1_spec>
+    </properties>
+
+    <name>CXF APACHE REST</name>
+
+    <dependencies>
+
+        <!-- Dependency on the EJB module so we can use it's services if needed -->
+
+        <!-- Import the JPA API, we use provided scope as the API is included
+           in JBoss AS 7 -->
+
+        <dependency>
+            <groupId>personal</groupId>
+            <artifactId>completeEar-ejb</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax</groupId>
+                    <artifactId>javaee-api</artifactId>
+                </exclusion>
+
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thetransactioncompany</groupId>
+            <artifactId>cors-filter</artifactId>
+            <version>2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.11</version>
+        </dependency>
+
+
+        <!-- Import the JAX-RS API, we use provided scope as the API is included
+         in JBoss EAP -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+            <version>${version.jaxrs-api_2.1_spec}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+<!--        <dependency>-->
+<!--            <groupId>org.jboss.resteasy</groupId>-->
+<!--            <artifactId>resteasy-multipart-provider</artifactId>-->
+<!--            <version>3.6.1.SP2-redhat-00001</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.jboss.resteasy</groupId>-->
+<!--            <artifactId>resteasy-jackson2-provider</artifactId>-->
+<!--            <version>3.6.1.SP2-redhat-00001</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${version.gson}</version>
+        </dependency>
+
+
+        <!--swagger-->
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+            <version>1.5.18</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+                    <artifactId>jackson-jaxrs-json-provider</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.webjars</groupId>-->
+<!--            <artifactId>swagger-ui</artifactId>-->
+<!--            <version>2.2.10-1</version>-->
+<!--        </dependency>-->
+
+
+
+
+
+        <!--bean validation-->
+
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.14.Final-redhat-00001</version>
+            <scope>provided</scope>
+
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-validator-provider-11</artifactId>
+            <version>3.6.1.SP2-redhat-00001</version>
+            <scope>provided</scope>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-validator</artifactId>-->
+<!--            <version>5.0.2.Final</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.8</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- Test scope dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11
+            </version>
+            <scope>test</scope>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.apache.cxf</groupId>-->
+<!--            <artifactId>cxf-rt-transports-http-jetty</artifactId>-->
+<!--            <version>${cxf.version}</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.org.slf4j}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
+            <scope>test</scope>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <!-- or whatever version you use -->
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <!-- Java EE 6 doesn't require web.xml, Maven needs to catch
+                       up! -->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

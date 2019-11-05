@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Using the XMLHttpRequest object</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<input type="file" id="file-select" name="photos[]"/>
+
+<button type="button" onclick="uploadFile()">Upload file with</button>
+
+<p id="demo"></p>
+
+<hr/>
+<br>
+
+
+<a id="linkDownload" href="1">   DESCARGA</a>
+
+<script>
+
+
+
+    function uploadFile() {
+
+        var formData = new FormData();
+        var fileSelect = document.getElementById('file-select');
+        var files = fileSelect.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+
+
+            // Add the file to the request.
+            formData.append('upfile', file, file.name);
+        }
+
+
+        var requestVo = {
+            "requestMsg": "Message",
+            "value": 999,
+            "valorMinimo": "string"
+
+
+        };
+
+
+        var blob = new Blob([JSON.stringify(requestVo)], {
+            type: "application/json"
+        })
+        formData.append('data', blob);
+
+
+        var url = "http://localhost:8080/cxf-example/api/rest/upload-mock-base";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("demo").innerHTML =
+                    this.responseText;
+
+                var urlDownload = "http://localhost:8080/cxf-example/api/rest/obtain-file-base/";
+                var id =JSON.parse(this.response).image;
+
+                $('#linkDownload').attr('href', urlDownload+ id);
+            }
+        };
+        xhttp.open("POST", url, true);
+        xhttp.send(formData);
+
+    }
+</script>
+
+</body>
+</html>
