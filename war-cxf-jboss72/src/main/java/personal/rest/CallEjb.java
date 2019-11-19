@@ -4,32 +4,36 @@ package personal.rest;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 //import io.swagger.annotations.ApiParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import personal.Lookup;
 import personal.ejb.TestEJBRemote;
 
-//import javax.validation.constraints.NotNull;
-//import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+//import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.Size;
+
 
 /**
  * Created by HW on 10/19/16.
  */
+@Slf4j
 @Path("/call-ejb")
-//@Api(value = "call", description = "Simple rest"
-//)
+@Api(value = "call", description = "Simple rest"
+)
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class CallEjb {
 
-    private static Logger logger = LoggerFactory.getLogger(CallEjb.class);
-
+    
 
     private TestEJBRemote testEJBRemote;
 
@@ -41,15 +45,15 @@ public class CallEjb {
     @GET
     @Path("/name/{name}")
     public void doGet(
-//            @ApiParam(value = "name to add to ejb", required = true,example = "Juan")
+            @ApiParam(value = "name to add to ejb", required = true,example = "Juan")
             @PathParam("name")  String name) {
-        logger.info("called rest service");
+        log.info("called rest service");
         testEJBRemote.addName(name);
     }
 
     @GET
     @Path("/name")
-//    @ApiOperation(value = "Obtiene nombres", notes = "SUPER RESUMEN",response = String.class,responseContainer = "List")
+   @ApiOperation(value = "Obtiene nombres", notes = "SUPER RESUMEN",response = String.class,responseContainer = "List")
     public Response obtainNames() {
         String name = testEJBRemote.obtainName();
         List<String> names = new ArrayList<>();
