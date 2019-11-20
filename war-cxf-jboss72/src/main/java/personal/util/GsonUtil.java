@@ -29,4 +29,10 @@ public class GsonUtil {
     }
 
 
+    public <T> T fromJson(String jsonString,Class<T> classType) {
+        return  gson.fromJson(jsonString,classType);
+
+    }
+
+
 }

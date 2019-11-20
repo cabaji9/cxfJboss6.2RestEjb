@@ -2,7 +2,7 @@ package personal.config;
 
 
 import io.swagger.jaxrs.config.BeanConfig;
-import personal.config.exception.mapper.BeanValConstrainViolationExceptionMapper;
+import personal.config.exception.mapper.*;
 import personal.interceptor.LoggingInterceptor;
 import personal.rest.CallEjb;
 import personal.rest.ProducerMsg;
@@ -55,7 +55,9 @@ public class JaxRsConfigApplication extends Application {
 
 
     private void addValidators(Set<Class<?>> resources){
-        resources.add(BeanValConstrainViolationExceptionMapper.class);
+     //   resources.add(BeanValConstrainViolationExceptionMapper.class);
+        resources.add(ValidationExceptionMapperCustom.class);
+        resources.add(LogAuditExceptionMapperCustom.class);
         //bean validation
     }
 
@@ -72,5 +74,9 @@ public class JaxRsConfigApplication extends Application {
 
     private void addJsonMappers(Set<Class<?>> resources){
 //        resources.add(ResteasyJackson2Provider.class);
+        resources.add(JsonMappingExceptionMapperCustom.class);
+        resources.add(JsonParseExceptionMapperCustom.class);
     }
+
+
 }

@@ -12,6 +12,9 @@ import java.util.Date;
 @Data
 public class ResponseVo {
 
+    private String mensaje;
+    private boolean resultado;
+
     private String errorMessage;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = TimeConstants.DATE_PATTERN, timezone = TimeConstants.TIMEZONE)

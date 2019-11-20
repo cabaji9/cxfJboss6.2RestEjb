@@ -30,7 +30,7 @@
 <script>
 
     function obtainImage() {
-        var url = "http://localhost:8080/cxf-example/api/rest/obtain-file-base64";
+        var url = "http://localhost:8680/cxf-example/api/rest/obtain-file-base64";
 
         $.ajax({
             url: url,
@@ -66,7 +66,7 @@
 
     function obtainImageData(){
 
-        var url = "http://localhost:8080/cxf-example/api/rest/obtain-file-base64";
+        var url = "http://localhost:8680/cxf-example/api/rest/obtain-file-base64";
 
         $.ajax({
             url: url,
@@ -116,7 +116,7 @@
         formData.append('data', blob);
 
 
-        var url = "http://localhost:8080/cxf-example/api/rest/upload";
+        var url = "http://localhost:8680/cxf-example/api/rest/upload";
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
