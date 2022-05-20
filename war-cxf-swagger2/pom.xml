@@ -11,7 +11,7 @@
     <properties>
         <maven.compiler.target>1.7</maven.compiler.target>
         <maven.compiler.source>1.7</maven.compiler.source>
-        <version.gson>2.6.2</version.gson>
+        <version.gson>2.8.9</version.gson>
         <cxf.version>3.1.2</cxf.version>
         <version.org.slf4j>1.7.21</version.org.slf4j>
     </properties>
